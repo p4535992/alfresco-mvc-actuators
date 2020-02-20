@@ -1,0 +1,9 @@
+<webscript>
+  <shortname>mvc-actuators</shortname>
+  <url>/mvc-actuators</url>
+  <url>/mvc-actuators/{path}</url>
+  <authentication>admin</authentication>
+  <transaction>none</transaction>
+  <format default="json"></format>
+  <formdata multipart-processing="false" />
+</webscript>
