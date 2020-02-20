@@ -34,7 +34,7 @@ Configuration
 
 - if you are still using AMPs you can run=> "mvn package -Pamp" and an amp in zip format will be built. Just rename it to .amp
 - spring-boot-admin-client-*.jar is actually not a mandatory dependency, if for some reason you only want to use all the available actuators, without registering to SBA
-  the entry endpoing is ${mvc-actuators.host}/s/mvc-actuators
+  the entry endpoint is ${mvc-actuators.host}/s/mvc-actuators
   
 
 
