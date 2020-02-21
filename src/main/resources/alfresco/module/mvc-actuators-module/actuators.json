@@ -1,16 +1,12 @@
 {
 	"_links": {
 		"self": {
-			"href": "${mvc-actuators.host}/s/mvc-actuators",
+			"href": "${mvc-actuators.host}/s/mvc-actuators/",
 			"templated": false
 		},
 		"env": {
 			"href": "${mvc-actuators.host}/s/mvc-actuators/env",
 			"templated": false
-		},
-		"env-toMatch": {
-			"href": "${mvc-actuators.host}/s/mvc-actuators/env/{toMatch}",
-			"templated": true
 		},
 		"info": {
 			"href": "${mvc-actuators.host}/s/mvc-actuators/info",
@@ -35,6 +31,22 @@
 		"metrics-requiredMetricName": {
 			"href": "${mvc-actuators.host}/s/mvc-actuators/metrics/{requiredMetricName}",
 			"templated": true
+		},
+		"beans": {
+			"href": "${mvc-actuators.host}/s/mvc-actuators/beans",
+			"templated": false
+		},
+		"scheduledtasks": {
+			"href": "${mvc-actuators.host}/s/mvc-actuators/scheduledtasks",
+			"templated": false
+		},
+		"jolokia": {
+			"href": "${mvc-actuators.host}/s/mvc-actuators/jolokia",
+			"templated": false
+		},
+		"mappings": {
+			"href": "${mvc-actuators.host}/s/mvc-actuators/mappings",
+			"templated": false
 		}
 	}
 }

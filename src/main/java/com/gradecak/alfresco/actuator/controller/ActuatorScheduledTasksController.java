@@ -17,44 +17,31 @@
 package com.gradecak.alfresco.actuator.controller;
 
 import java.io.IOException;
+import java.util.Collection;
 
-import org.springframework.boot.actuate.env.EnvironmentEndpoint;
-import org.springframework.boot.actuate.env.EnvironmentEndpoint.EnvironmentDescriptor;
+import org.springframework.boot.actuate.scheduling.ScheduledTasksEndpoint;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.scheduling.config.ScheduledTaskHolder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
-@RequestMapping("/env")
-public class ActuatorEnvController {
+@RequestMapping("/scheduledtasks")
+public class ActuatorScheduledTasksController {
 
-	private final EnvironmentEndpoint endpoint;
+	private final ScheduledTasksEndpoint endpoint;
 	private final ObjectMapper mapper;
 
-	public ActuatorEnvController(EnvironmentEndpoint e, ObjectMapper mapper) {
-		this.endpoint = e;
+	public ActuatorScheduledTasksController(Collection<ScheduledTaskHolder> scheduledTaskHolders, ObjectMapper mapper) {
+		this.endpoint = new ScheduledTasksEndpoint(scheduledTaskHolders);
 		this.mapper = mapper;
 	}
 
 	@GetMapping
-	public ResponseEntity<?> get(@Nullable String pattern) throws IOException {
-		EnvironmentDescriptor environment = endpoint.environment(pattern);
-		return ResponseEntity.ok(mapper.writeValueAsString(environment));
-	}
-
-	@DeleteMapping
-	public ResponseEntity<?> delete() {
-		return ResponseEntity.badRequest().build();
-	}
-
-	@PostMapping
-	public ResponseEntity<?> update() {
-		return ResponseEntity.badRequest().build();
+	public ResponseEntity<?> get() throws IOException {
+		return ResponseEntity.ok(mapper.writeValueAsString(endpoint.scheduledTasks()));
 	}
 }

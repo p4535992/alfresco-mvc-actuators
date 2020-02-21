@@ -47,4 +47,5 @@ v1.0.0-SNAPSHOT
   I recommend to use it with Spring Cloud Gateway and WebFlux/Web Reactive  and a reference Alfresco Authentication implementation is available at [https://github.com/dgradecak/alfresco-jwt-auth](https://github.com/dgradecak/alfresco-jwt-auth). 
   You can enable your SBA server in that application and watch the magic happen :-)
 - Tested on Alfresco Community 6.2-GA
+- should work on 6.2 enterprise (be aware that the micrometer jar exists in enterprise)
 

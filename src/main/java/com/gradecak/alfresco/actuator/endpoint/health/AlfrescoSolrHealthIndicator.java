@@ -19,30 +19,29 @@ package com.gradecak.alfresco.actuator.endpoint.health;
 import org.alfresco.repo.search.impl.lucene.JSONAPIResultFactory;
 import org.alfresco.repo.search.impl.solr.SolrAdminClientInterface;
 import org.alfresco.repo.solr.SOLRAdminClient;
+import org.springframework.boot.actuate.health.AbstractHealthIndicator;
+import org.springframework.boot.actuate.health.Health.Builder;
 
-import com.gradecak.alfresco.actuator.endpoint.health.Health.Builder;
+public class AlfrescoSolrHealthIndicator extends AbstractHealthIndicator {
 
-public class SolrHealth extends NamedHealthContributor {
-
-	private final Builder health = Health.unknown();
 	private final SOLRAdminClient adminClient;
 
-	public SolrHealth(SOLRAdminClient adminClient) {
-		super("solr", null);
+	public AlfrescoSolrHealthIndicator(SOLRAdminClient adminClient) {
+		super("Solr check failed");
 		this.adminClient = adminClient;
 	}
 
 	@Override
-	public HealthComponent getHealthComponent() {
+	protected void doHealthCheck(Builder builder) throws Exception {
 		try {
 			adminClient.executeAction(null, JSONAPIResultFactory.ACTION.STATUS, SolrAdminClientInterface.JSON_PARAM);
-			health.up();
+			builder.up();
 		} catch (Throwable e) {
-			health.down();
+			builder.down();
 		}
-		return health.build();
 	}
 
+// TODO once Alfresco fixes https://issues.alfresco.com/jira/browse/ALF-22112
 //	@EventListener(SolrActiveEvent.class)
 //	@Order(Ordered.LOWEST_PRECEDENCE)
 //	public void solurUp(SolrActiveEvent event) {

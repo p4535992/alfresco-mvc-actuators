@@ -17,18 +17,17 @@
 package com.gradecak.alfresco.actuator.module;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableMBeanExport;
 
 import com.gradecak.alfresco.mvc.rest.annotation.AlfrescoDispatcherWebscript;
 import com.gradecak.alfresco.mvc.rest.annotation.EnableAlfrescoMvcRest;
+import com.gradecak.alfresco.mvc.webscript.DispatcherWebscript.ServletConfigOptions;
 
 @Configuration
-@EnableAlfrescoMvcRest(@AlfrescoDispatcherWebscript(name = "mvc-actuators.mvc", servletContext = AlfrescoMvcActuatorsServletContext.class, inheritGlobalProperties = true))
+@EnableMBeanExport
+@EnableAlfrescoMvcRest({
+		@AlfrescoDispatcherWebscript(name = "mvc-actuators.mvc", servletContext = AlfrescoMvcActuatorsServletContext.class, inheritGlobalProperties = true, servletConfigOptions = ServletConfigOptions.DISABLED_PARENT_HANDLER_MAPPINGS) })
 public class AlfrescoMvcActuatorsModuleConfig {
 
-//	 //initialized in the alfresco context in order to be notified of application events
-//	@Bean
-//	public SolrHealth solrHealthComponent() {
-//		return new SolrHealth();
-//	}
-
+//	 //initialize in the alfresco context in order to be notified of application events
 }

@@ -48,7 +48,7 @@ public class AlfrescoMvcApplicationFactory implements ApplicationFactory {
 	}
 
 	protected String getManagementUrl() {
-		return UriComponentsBuilder.fromUriString(alfrescoUri).path("/s/mvc-actuators").toUriString();
+		return UriComponentsBuilder.fromUriString(alfrescoUri).path("/s/mvc-actuators/").toUriString();
 	}
 
 	protected String getHealthUrl() {

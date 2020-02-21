@@ -17,24 +17,27 @@
 package com.gradecak.alfresco.actuator.controller;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
 
+import org.springframework.boot.actuate.info.InfoEndpoint;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @RequestMapping("info")
 public class ActuatorInfoController {
 
-	private final Map<String, String> info;
+	private final InfoEndpoint endpoint;
+	private final ObjectMapper mapper;
 
-	public ActuatorInfoController(Map<String, String> info) {
-		this.info = info;
+	public ActuatorInfoController(InfoEndpoint endpoint, ObjectMapper mapper) {
+		this.endpoint = endpoint;
+		this.mapper = mapper;
 	}
 
 	@GetMapping
 	public ResponseEntity<?> info() throws IOException {
-		return ResponseEntity.ok(info != null ? info : Collections.singletonMap("Environment", "Development"));
+		return ResponseEntity.ok(mapper.writeValueAsString(endpoint.info()));
 	}
 }
