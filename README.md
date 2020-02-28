@@ -35,17 +35,16 @@ Configuration
 - if you are still using AMPs you can run=> "mvn package -Pamp" and an amp in zip format will be built. Just rename it to .amp
 - spring-boot-admin-client-*.jar is actually not a mandatory dependency, if for some reason you only want to use all the available actuators, without registering to SBA
   the entry endpoint is ${mvc-actuators.host}/s/mvc-actuators
-  
-
+- Default configuration is set up for localhost usage. ACS is on the port 8080 and SBA on the port 9595
+  in order to enable SBA refer to [https://codecentric.github.io/spring-boot-admin/current/#set-up-admin-server](https://codecentric.github.io/spring-boot-admin/current/#set-up-admin-server) @EnableAdminServer. 
+  I recommend to use it with Spring Cloud Gateway and WebFlux/Web Reactive  and a reference Alfresco Authentication implementation is available at [https://github.com/dgradecak/alfresco-jwt-auth](https://github.com/dgradecak/alfresco-jwt-auth). 
+  You can enable your SBA server in that application and watch the magic happen :-)
 
 Supported Alfresco versions
 ----
 v1.0.0-SNAPSHOT
 -
-- Default configuration is set up for localhost usage. ACS is on the port 8080 and SBA on the port 9595
-  in order to enable SBA refer to [https://codecentric.github.io/spring-boot-admin/current/#set-up-admin-server](https://codecentric.github.io/spring-boot-admin/current/#set-up-admin-server) @EnableAdminServer. 
-  I recommend to use it with Spring Cloud Gateway and WebFlux/Web Reactive  and a reference Alfresco Authentication implementation is available at [https://github.com/dgradecak/alfresco-jwt-auth](https://github.com/dgradecak/alfresco-jwt-auth). 
-  You can enable your SBA server in that application and watch the magic happen :-)
 - Tested on Alfresco Community 6.2-GA
 - should work on 6.2 enterprise (be aware that the micrometer jar exists in enterprise)
+- be aware that this project depends on https://github.com/dgradecak/alfresco-mvc 7.0.5-SNAPSHOT (dev branch) that is not yet released to maven central
 
