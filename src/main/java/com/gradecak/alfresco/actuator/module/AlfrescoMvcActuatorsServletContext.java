@@ -27,18 +27,21 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.gradecak.alfresco.actuator.module.servlet.ActuatorsConfiguration;
+import com.gradecak.alfresco.actuator.module.servlet.ActuatorsHealthConfiguration;
 import com.gradecak.alfresco.actuator.module.servlet.JolokiaConfiguration;
+import com.gradecak.alfresco.actuator.module.servlet.MappingsConfiguration;
 import com.gradecak.alfresco.actuator.module.servlet.MetricsConfiguration;
 import com.gradecak.alfresco.actuator.module.servlet.SbaConfiguration;
 import com.gradecak.alfresco.mvc.rest.annotation.EnableWebAlfrescoMvc;
 
 @Configuration
-@EnableWebAlfrescoMvc
 @EnableMBeanExport
-@Import({SbaConfiguration.class, ActuatorsConfiguration.class, JolokiaConfiguration.class, MetricsConfiguration.class})
+@EnableWebAlfrescoMvc
+@Import({ MappingsConfiguration.class, SbaConfiguration.class, ActuatorsConfiguration.class, JolokiaConfiguration.class,
+		MetricsConfiguration.class, ActuatorsHealthConfiguration.class })
 public class AlfrescoMvcActuatorsServletContext implements WebMvcConfigurer {
 
-	// alfresco mapper does not include non empty fields
+	// alfresco mapper (parent) does not include non empty fields
 	private final ObjectMapper mapper = new ObjectMapper();
 
 	public AlfrescoMvcActuatorsServletContext() {
@@ -50,9 +53,8 @@ public class AlfrescoMvcActuatorsServletContext implements WebMvcConfigurer {
 		mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		mapper.configure(SerializationFeature.WRITE_DURATIONS_AS_TIMESTAMPS, false);
 		mapper.configure(MapperFeature.USE_STD_BEAN_NAMING, true);
-		//mapper.setSerializationInclusion(Include.NON_NULL);
 	}
-	
+
 	@Bean
 	@Primary
 	ObjectMapper objectMapper() {

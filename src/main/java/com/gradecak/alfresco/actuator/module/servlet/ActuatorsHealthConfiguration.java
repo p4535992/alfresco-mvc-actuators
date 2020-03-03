@@ -47,12 +47,6 @@ import com.gradecak.alfresco.actuator.endpoint.health.AlfrescoSolrHealthIndicato
 @EnableConfigurationProperties({ HealthIndicatorProperties.class })
 public class ActuatorsHealthConfiguration {
 
-	private final ObjectMapper mapper;
-
-	public ActuatorsHealthConfiguration(ObjectMapper mapper) {
-		this.mapper = mapper;
-	}
-
 	@Bean
 	public AlfrescoSolrHealthIndicator solrHealthIndicator(ApplicationContext context) {
 		SwitchableApplicationContextFactory search = (SwitchableApplicationContextFactory) context.getParent()
@@ -91,10 +85,10 @@ public class ActuatorsHealthConfiguration {
 		HealthIndicatorRegistryFactory factory = new HealthIndicatorRegistryFactory();
 		return factory.createHealthIndicatorRegistry(indicators);
 	}
-
+	
 	@Bean
 	public ActuatorHealthController actuatorHealthController(OrderedHealthAggregator healthAggregator,
-			HealthIndicatorRegistry healthIndicatorRegistry) {
+			HealthIndicatorRegistry healthIndicatorRegistry, ObjectMapper mapper) {
 		return new ActuatorHealthController(
 				new HealthEndpoint(new CompositeHealthIndicator(healthAggregator, healthIndicatorRegistry)), mapper);
 	}

@@ -29,5 +29,6 @@ import com.gradecak.alfresco.mvc.webscript.DispatcherWebscript.ServletConfigOpti
 		@AlfrescoDispatcherWebscript(name = "mvc-actuators.mvc", servletContext = AlfrescoMvcActuatorsServletContext.class, inheritGlobalProperties = true, servletConfigOptions = ServletConfigOptions.DISABLED_PARENT_HANDLER_MAPPINGS) })
 public class AlfrescoMvcActuatorsModuleConfig {
 
-//	 //initialize in the alfresco context in order to be notified of application events
+//	 //initialize in the alfresco context in order to be notified of application events like SolrActiveEvent
+
 }

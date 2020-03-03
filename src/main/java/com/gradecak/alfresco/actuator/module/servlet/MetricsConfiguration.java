@@ -26,7 +26,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gradecak.alfresco.actuator.controller.ActuatorMetricsController;
 
 import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.binder.jvm.ClassLoaderMetrics;
 import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics;
 import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics;
@@ -39,22 +38,10 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 //@ConditionalOnProperty(prefix = "management.metrics.export.simple", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class MetricsConfiguration {
 
-	private final ObjectMapper mapper;
-
-	public MetricsConfiguration(ObjectMapper mapper) {
-		this.mapper = mapper;
-	}
-
 	@Bean
 	@ConditionalOnMissingBean
 	public MeterRegistry meterRegistry() {
 		return new SimpleMeterRegistry();
-	}
-
-	@Bean
-	public ActuatorMetricsController actuatorMetricsController(MeterRegistry registry) {
-		Metrics.addRegistry(registry);
-		return new ActuatorMetricsController(new MetricsEndpoint(registry), mapper);
 	}
 
 	@Bean
@@ -83,5 +70,10 @@ public class MetricsConfiguration {
 		ClassLoaderMetrics metric = new ClassLoaderMetrics();
 		metric.bindTo(registry);
 		return metric;
+	}
+	
+	@Bean
+	public ActuatorMetricsController actuatorMetricsController(MeterRegistry registry, ObjectMapper mapper) {
+		return new ActuatorMetricsController(new MetricsEndpoint(registry), mapper);
 	}
 }

@@ -17,13 +17,9 @@
 package com.gradecak.alfresco.actuator.module.servlet;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import javax.management.MBeanServer;
 
 import org.apache.log4j.Appender;
 import org.apache.log4j.FileAppender;
@@ -37,17 +33,12 @@ import org.springframework.boot.actuate.info.InfoEndpoint;
 import org.springframework.boot.actuate.info.MapInfoContributor;
 import org.springframework.boot.actuate.logging.LogFileWebEndpoint;
 import org.springframework.boot.actuate.logging.LoggersEndpoint;
-import org.springframework.boot.actuate.web.mappings.MappingDescriptionProvider;
-import org.springframework.boot.actuate.web.mappings.servlet.DispatcherServletsMappingDescriptionProvider;
-import org.springframework.boot.actuate.web.mappings.servlet.FiltersMappingDescriptionProvider;
-import org.springframework.boot.actuate.web.mappings.servlet.ServletsMappingDescriptionProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
-import org.springframework.scheduling.config.ScheduledTaskHolder;
+import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gradecak.alfresco.actuator.controller.ActuatorBeansController;
@@ -56,17 +47,14 @@ import com.gradecak.alfresco.actuator.controller.ActuatorEnvController;
 import com.gradecak.alfresco.actuator.controller.ActuatorInfoController;
 import com.gradecak.alfresco.actuator.controller.ActuatorLogfileController;
 import com.gradecak.alfresco.actuator.controller.ActuatorLoggersController;
-import com.gradecak.alfresco.actuator.controller.ActuatorMappingsController;
 import com.gradecak.alfresco.actuator.controller.ActuatorScheduledTasksController;
 import com.gradecak.alfresco.actuator.endpoint.loggers.Log4JLoggingSystem;
-import com.gradecak.alfresco.mvc.webscript.DispatcherWebscript;
 
 @Configuration
-@Import(ActuatorsHealthConfiguration.class)
 public class ActuatorsConfiguration {
-	
+
 	private final ObjectMapper mapper;
-	
+
 	public ActuatorsConfiguration(ObjectMapper mapper) {
 		this.mapper = mapper;
 	}
@@ -82,8 +70,9 @@ public class ActuatorsConfiguration {
 	}
 
 	@Bean
-	public ActuatorInfoController actuatorInfoController(List<InfoContributor> infoContributors) {
-		return new ActuatorInfoController(new InfoEndpoint(infoContributors), mapper);
+	public ActuatorInfoController actuatorInfoController(ObjectProvider<InfoContributor> infoContributors) {
+		return new ActuatorInfoController(
+				new InfoEndpoint(infoContributors.orderedStream().collect(Collectors.toList())), mapper);
 	}
 
 	@Bean
@@ -98,8 +87,9 @@ public class ActuatorsConfiguration {
 
 	@Bean
 	public ActuatorScheduledTasksController actuatorScheduledTasksController(
-			Collection<ScheduledTaskHolder> scheduledTaskHolders, MBeanServer mBeanServer) {
-		return new ActuatorScheduledTasksController(scheduledTaskHolders, mapper);
+			ObjectProvider<CronTriggerFactoryBean> crons) {
+		return new ActuatorScheduledTasksController(
+				crons.orderedStream().map(c -> c.getObject()).collect(Collectors.toList()), mapper);
 	}
 
 	@Bean
@@ -122,31 +112,4 @@ public class ActuatorsConfiguration {
 		return new ActuatorLoggersController(
 				new LoggersEndpoint(new Log4JLoggingSystem(this.getClass().getClassLoader())), mapper);
 	}
-
-	@Bean
-	public ActuatorMappingsController actuatorMappingsController(
-			ObjectProvider<MappingDescriptionProvider> descriptionProviders,
-			List<DispatcherWebscript> dispatcherWebscripts) {
-		return new ActuatorMappingsController(descriptionProviders.orderedStream().collect(Collectors.toList()),
-				dispatcherWebscripts, mapper);
-	}
-
-	@Bean
-	public ServletsMappingDescriptionProvider servletMappingDescriptionProvider() {
-		return new ServletsMappingDescriptionProvider();
-	}
-
-	@Bean
-	public FiltersMappingDescriptionProvider filterMappingDescriptionProvider() {
-		return new FiltersMappingDescriptionProvider();
-	}
-
-	@Bean
-	public DispatcherServletsMappingDescriptionProvider dispatcherServletMappingDescriptionProvider() {
-		return new DispatcherServletsMappingDescriptionProvider();
-	}
-
-	// TODO add
-	// org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping
-	// instead of controllers??
 }

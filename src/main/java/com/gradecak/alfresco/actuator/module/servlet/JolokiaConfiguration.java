@@ -16,42 +16,29 @@
 
 package com.gradecak.alfresco.actuator.module.servlet;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import javax.servlet.ServletException;
 
 import org.jolokia.http.AgentServlet;
-import org.springframework.boot.actuate.autoconfigure.jolokia.JolokiaEndpoint;
-import org.springframework.boot.actuate.endpoint.web.ExposableServletEndpoint;
-import org.springframework.boot.actuate.endpoint.web.ServletEndpointRegistrar;
-import org.springframework.boot.actuate.endpoint.web.annotation.ServletEndpointDiscoverer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.context.ApplicationContext;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import com.gradecak.alfresco.actuator.controller.ActuatorJolokiaController;
+import com.gradecak.alfresco.actuator.controller.ActuatorJolokiaController.AlfrescoJolokiaAgentServlet;
+
 @Configuration
 @ConditionalOnClass(AgentServlet.class)
+@ConditionalOnProperty(name = "mvc-actuators.jolokia.enabled", havingValue = "true", matchIfMissing = true)
 public class JolokiaConfiguration {
 
 	@Bean
-	public JolokiaEndpoint jolokiaEndpoint() {
-		return new JolokiaEndpoint(Collections.emptyMap());
-	}
+	public ActuatorJolokiaController actuatorJolokiaController(DispatcherServlet dispatcherServlet)
+			throws ServletException {
+		AlfrescoJolokiaAgentServlet jolokiaServlet = new AlfrescoJolokiaAgentServlet();
+		jolokiaServlet.init(dispatcherServlet.getServletConfig());
 
-	@Bean
-	public ServletEndpointRegistrar servletEndpointRegistrar(ApplicationContext context,
-			DispatcherServlet dispatcherServlet) throws ServletException {
-
-		ServletEndpointDiscoverer servletEndpointDiscoverer = new ServletEndpointDiscoverer(context,
-				Collections.emptyList(), Collections.emptyList());
-		Collection<ExposableServletEndpoint> endpoints = servletEndpointDiscoverer.getEndpoints();
-
-		ServletEndpointRegistrar servletEndpointRegistrar = new ServletEndpointRegistrar("/s/mvc-actuators", endpoints);
-
-		servletEndpointRegistrar.onStartup(dispatcherServlet.getServletContext());
-		return servletEndpointRegistrar;
+		return new ActuatorJolokiaController(jolokiaServlet);
 	}
 }
