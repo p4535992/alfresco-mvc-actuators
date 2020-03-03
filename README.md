@@ -2,7 +2,8 @@
 
 Spring Boot like Actuators for Alfresco Content Services
 ===
-
+Spring Boot Actuators help you monitor and manage your application when you push it to production.
+This project reuses Spring Boot 2.1.6 (for compatibility with Spring 5.1.8 used by Alfresco).
 
 * https://github.com/codecentric/spring-boot-admin
 * https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html
