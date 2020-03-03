@@ -8,6 +8,9 @@ Spring Boot like Actuators for Alfresco Content Services
 * https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html
 * https://micrometer.io
 
+![Screenshot details](/images/screenshots/health-metrics.png)
+*View application health, info and details*
+
 Configuration
 ----
 - Default configuration is set up for localhost usage. ACS is on the port 8080 and SBA (Spring Boot Admin) on the port 9595
@@ -34,6 +37,36 @@ Configuration
   in order to enable SBA refer to [https://codecentric.github.io/spring-boot-admin/current/#set-up-admin-server](https://codecentric.github.io/spring-boot-admin/current/#set-up-admin-server) @EnableAdminServer. 
   I recommend to use it with Spring Cloud Gateway and WebFlux/Web Reactive  and a reference Alfresco Authentication implementation is available at [https://github.com/dgradecak/alfresco-jwt-auth](https://github.com/dgradecak/alfresco-jwt-auth). 
   You can enable your SBA server in that application and watch the magic happen :-)
+
+Screenshots
+----
+![Screenshot application list](/images/screenshots/applications.png)
+*Dashboard with desktop notifications*
+
+![Screenshot logfile](/images/screenshots/logfile.png)
+*View logfile (with follow)*
+
+![Screenshot environment](/images/screenshots/environment.png)
+*View and change Alfresco environment
+
+![Screenshot logging](/images/screenshots/loggers.png)
+*Manage logger levels*
+
+![Screenshot jmx](/images/screenshots/jmx.png)
+*View and use JMX beans via jolokia*
+
+![Screenshot jmx](/images/screenshots/scheduledtasks.png)
+*View cron jobs*
+
+![Screenshot jmx](/images/screenshots/metrics.png)
+*View and setup metrics*
+
+![Screenshot jmx](/images/screenshots/beans.png)
+*View all beans*
+
+![Screenshot wallboard](/images/screenshots/wallboard.png)
+*View history of registered applications*
+
 
 Supported Alfresco versions
 ----
