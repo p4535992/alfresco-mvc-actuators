@@ -41,7 +41,7 @@ spring.boot.admin.client.instance.metadata.user.password=admin
 - Default configuration is set up for localhost usage. ACS is on the port 8080 and SBA on the port 9595
   in order to enable SBA refer to [https://codecentric.github.io/spring-boot-admin/current/#set-up-admin-server](https://codecentric.github.io/spring-boot-admin/current/#set-up-admin-server) @EnableAdminServer. 
   I recommend to use it with Spring Cloud Gateway and WebFlux/Web Reactive  and a reference Alfresco Authentication implementation is available at [https://github.com/dgradecak/alfresco-jwt-auth](https://github.com/dgradecak/alfresco-jwt-auth). 
-  You can enable your SBA server in that application and watch the magic happen :-)
+  SBA server is already enabled ... sit down watch the magic happen :-)
 
 Docker (Deploy AlfrescoMVC Actuators)
 ----
@@ -84,7 +84,7 @@ Add the same ones as above for enterprise and these
 
 Spring boot Admin server
 -
-- Deploy your SBA server
+- Deploy your SBA server or use [https://github.com/dgradecak/alfresco-jwt-auth](https://github.com/dgradecak/alfresco-jwt-auth)
 - TODO: create a docker image for SBA server
 
 Screenshots
