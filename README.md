@@ -122,7 +122,7 @@ Supported Alfresco versions
 v1.0.0-SNAPSHOT
 -
 - Tested on Alfresco Community 6.2-GA
-- should work on 6.2 enterprise (be aware that some jars exist in enterprise: micrometer-core-1.3.5.jar, LatencyUtils-2.0.3.jar, HdrHistogram-2.1.11.jar/HdrHistogram-2.1.10.jar)
+- Tested on 6.2 enterprise (be aware that some jars exist in enterprise: micrometer-core-1.3.5.jar, LatencyUtils-2.0.3.jar, HdrHistogram-2.1.11.jar/HdrHistogram-2.1.10.jar)
 
 TODO
 -
