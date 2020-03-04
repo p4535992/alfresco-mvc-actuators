@@ -47,7 +47,7 @@ Docker (Deploy AlfrescoMVC Actuators)
 ----
 Define the SBA server url property on the Alfresco Repository
 -
-`-Dspring.boot.admin.client.url=http://192.168.100.109:9595/admin`
+`-Dspring.boot.admin.client.url=http://YOUR_SBA_HOST:9595/admin`
 
 Build the zip/amp 
 -
