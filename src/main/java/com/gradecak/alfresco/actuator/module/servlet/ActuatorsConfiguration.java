@@ -18,14 +18,12 @@ package com.gradecak.alfresco.actuator.module.servlet;
 
 import java.io.File;
 import java.util.Enumeration;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Appender;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.beans.BeansEndpoint;
 import org.springframework.boot.actuate.env.EnvironmentEndpoint;
 import org.springframework.boot.actuate.info.InfoContributor;
@@ -49,6 +47,7 @@ import com.gradecak.alfresco.actuator.controller.ActuatorLogfileController;
 import com.gradecak.alfresco.actuator.controller.ActuatorLoggersController;
 import com.gradecak.alfresco.actuator.controller.ActuatorScheduledTasksController;
 import com.gradecak.alfresco.actuator.endpoint.loggers.Log4JLoggingSystem;
+import com.gradecak.alfresco.actuator.module.MvcActuatorsProperties;
 
 @Configuration
 public class ActuatorsConfiguration {
@@ -65,8 +64,8 @@ public class ActuatorsConfiguration {
 	}
 
 	@Bean
-	public MapInfoContributor mapInfoContributor(@Value("#{${mvc-actuators.info}}") Map<String, Object> info) {
-		return new MapInfoContributor(info);
+	public MapInfoContributor mapInfoContributor(MvcActuatorsProperties properties) {
+		return new MapInfoContributor(properties.getInfo());
 	}
 
 	@Bean

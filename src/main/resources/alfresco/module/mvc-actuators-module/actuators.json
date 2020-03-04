@@ -1,51 +1,51 @@
 {
 	"_links": {
 		"self": {
-			"href": "${mvc-actuators.host}/s/mvc-actuators/",
+			"href": "${spring.boot.admin.client.instance.serviceUrl}/s/mvc-actuators/",
 			"templated": false
 		},
 		"env": {
-			"href": "${mvc-actuators.host}/s/mvc-actuators/env",
+			"href": "${spring.boot.admin.client.instance.serviceUrl}/s/mvc-actuators/env",
 			"templated": false
 		},
 		"info": {
-			"href": "${mvc-actuators.host}/s/mvc-actuators/info",
+			"href": "${spring.boot.admin.client.instance.serviceUrl}/s/mvc-actuators/info",
 			"templated": false
 		},
 		"logfile": {
-			"href": "${mvc-actuators.host}/s/mvc-actuators/logfile",
+			"href": "${spring.boot.admin.client.instance.serviceUrl}/s/mvc-actuators/logfile",
 			"templated": false
 		},
 		"loggers": {
-			"href": "${mvc-actuators.host}/s/mvc-actuators/loggers",
+			"href": "${spring.boot.admin.client.instance.serviceUrl}/s/mvc-actuators/loggers",
 			"templated": false
 		},
 		"loggers-name": {
-			"href": "${mvc-actuators.host}/s/mvc-actuators/loggers/{name}",
+			"href": "${spring.boot.admin.client.instance.serviceUrl}/s/mvc-actuators/loggers/{name}",
 			"templated": true
 		},
 		"metrics": {
-			"href": "${mvc-actuators.host}/s/mvc-actuators/metrics",
+			"href": "${spring.boot.admin.client.instance.serviceUrl}/s/mvc-actuators/metrics",
 			"templated": false
 		},
 		"metrics-requiredMetricName": {
-			"href": "${mvc-actuators.host}/s/mvc-actuators/metrics/{requiredMetricName}",
+			"href": "${spring.boot.admin.client.instance.serviceUrl}/s/mvc-actuators/metrics/{requiredMetricName}",
 			"templated": true
 		},
 		"beans": {
-			"href": "${mvc-actuators.host}/s/mvc-actuators/beans",
+			"href": "${spring.boot.admin.client.instance.serviceUrl}/s/mvc-actuators/beans",
 			"templated": false
 		},
 		"scheduledtasks": {
-			"href": "${mvc-actuators.host}/s/mvc-actuators/scheduledtasks",
+			"href": "${spring.boot.admin.client.instance.serviceUrl}/s/mvc-actuators/scheduledtasks",
 			"templated": false
 		},
 		"jolokia": {
-			"href": "${mvc-actuators.host}/s/mvc-actuators/jolokia",
+			"href": "${spring.boot.admin.client.instance.serviceUrl}/s/mvc-actuators/jolokia",
 			"templated": false
 		},
 		"mappings": {
-			"href": "${mvc-actuators.host}/s/mvc-actuators/mappings",
+			"href": "${spring.boot.admin.client.instance.serviceUrl}/s/mvc-actuators/mappings",
 			"templated": false
 		}
 	}

@@ -23,6 +23,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import com.gradecak.alfresco.actuator.controller.ActuatorJolokiaController;
@@ -31,6 +32,7 @@ import com.gradecak.alfresco.actuator.controller.ActuatorJolokiaController.Alfre
 @Configuration
 @ConditionalOnClass(AgentServlet.class)
 @ConditionalOnProperty(name = "mvc-actuators.jolokia.enabled", havingValue = "true", matchIfMissing = true)
+@EnableMBeanExport
 public class JolokiaConfiguration {
 
 	@Bean

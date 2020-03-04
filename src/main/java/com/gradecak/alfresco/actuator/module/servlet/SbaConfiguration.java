@@ -16,16 +16,13 @@
 
 package com.gradecak.alfresco.actuator.module.servlet;
 
-import java.time.Duration;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.web.client.RestTemplate;
 
@@ -33,55 +30,38 @@ import com.gradecak.alfresco.actuator.sba.registration.AlfrescoMvcApplicationFac
 import com.gradecak.alfresco.actuator.sba.registration.AlfrescoMvcRegistrationApplicationListener;
 
 import de.codecentric.boot.admin.client.config.ClientProperties;
+import de.codecentric.boot.admin.client.config.InstanceProperties;
+import de.codecentric.boot.admin.client.config.SpringBootAdminClientEnabledCondition;
 import de.codecentric.boot.admin.client.registration.ApplicationRegistrator;
 import de.codecentric.boot.admin.client.registration.BlockingRegistrationClient;
 
 @Configuration
 @ConditionalOnClass(ApplicationRegistrator.class)
-@ConditionalOnProperty(value = "mvc-actuators.sba.enabled", havingValue = "true", matchIfMissing = true)
-@EnableConfigurationProperties({ ClientProperties.class })
+@Conditional(SpringBootAdminClientEnabledCondition.class)
+@EnableConfigurationProperties({ ClientProperties.class, InstanceProperties.class })
 public class SbaConfiguration {
-
-	@Value("#{${mvc-actuators.sba.metadata}}")
-	private Map<String, String> metadata;
-
-	@Value("${mvc-actuators.sba.host}")
-	private String host;
-
-	@Value("${mvc-actuators.host}")
-	private String alfrescoHost;
-
-	@Value("${mvc-actuators.sba.application_name}")
-	private String applicationName;
-
-	@Value("${mvc-actuators.sba.password}")
-	private String password;
-
-	@Value("${mvc-actuators.sba.username}")
-	private String username;
 
 	@Bean
 	@ConditionalOnMissingBean
 	public AlfrescoMvcRegistrationApplicationListener alfrescoMvcRegistrationApplicationListener(
-			ClientProperties properties) {
-		AlfrescoMvcApplicationFactory factory = new AlfrescoMvcApplicationFactory(metadata, alfrescoHost,
-				applicationName);
+			ClientProperties clientProperties, InstanceProperties instanceProperties, Environment environment) {
+		AlfrescoMvcApplicationFactory factory = new AlfrescoMvcApplicationFactory(instanceProperties.getMetadata(),
+				instanceProperties.getServiceUrl(), instanceProperties.getName());
 
 		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor(username, password));
+		restTemplate.getInterceptors().add(
+				new BasicAuthenticationInterceptor(clientProperties.getUsername(), clientProperties.getPassword()));
 
 		BlockingRegistrationClient registrationClient = new BlockingRegistrationClient(restTemplate);
-		ClientProperties client = new ClientProperties();
-		client.setUrl(new String[] { host });
 
 		ApplicationRegistrator applicationRegistrator = new ApplicationRegistrator(factory, registrationClient,
-				client.getAdminUrl(), false);
+				clientProperties.getAdminUrl(), clientProperties.isRegisterOnce());
 
 		AlfrescoMvcRegistrationApplicationListener listener = new AlfrescoMvcRegistrationApplicationListener(
 				applicationRegistrator);
-		listener.setAutoRegister(true);
-		listener.setAutoDeregister(true);
-		listener.setRegisterPeriod(Duration.ofSeconds(10));
+		listener.setAutoRegister(clientProperties.isAutoRegistration());
+		listener.setAutoDeregister(clientProperties.isAutoDeregistration(environment));
+		listener.setRegisterPeriod(clientProperties.getPeriod());
 
 		return listener;
 	}
