@@ -39,6 +39,50 @@ Configuration
   I recommend to use it with Spring Cloud Gateway and WebFlux/Web Reactive  and a reference Alfresco Authentication implementation is available at [https://github.com/dgradecak/alfresco-jwt-auth](https://github.com/dgradecak/alfresco-jwt-auth). 
   You can enable your SBA server in that application and watch the magic happen :-)
 
+Docker (Deploy AlfrescoMVC Actuators)
+----
+Define the SBA server url property on the Alfresco Repository
+-
+`-Dspring.boot.admin.client.url=http://192.168.100.109:9595/admin`
+
+Build the zip/amp 
+-
+- clone this repo and execute: mvn clean package -Pamp
+- extract the zip /lib folder to the containing folder of your docker-compose.yml (i.e. to ./modules/platform)
+- reference those jars in your docker-compose file, under the alfresco container
+```services:
+       alfresco:
+           image: alfresco/alfresco-content-repository:XXX
+           volumes: ADD_JARS_HERE
+```           
+               
+on enterprise
+-
+        volumes:        
+            - ./modules/platform/alfresco-mvc-actuators-1.0.0-SNAPSHOT.jar:/usr/local/tomcat/webapps/alfresco/WEB-INF/lib/alfresco-mvc-actuators-1.0.0-SNAPSHOT.jar
+            - ./modules/platform/alfresco-mvc-rest-7.5.0-RELEASE.jar:/usr/local/tomcat/webapps/alfresco/WEB-INF/lib/alfresco-mvc-rest-7.5.0-RELEASE.jar
+            - ./modules/platform/jolokia-core-1.6.2.jar:/usr/local/tomcat/webapps/alfresco/WEB-INF/lib/jolokia-core-1.6.2.jar
+            - ./modules/platform/spring-boot-2.1.6.RELEASE.jar:/usr/local/tomcat/webapps/alfresco/WEB-INF/lib/spring-boot-2.1.6.RELEASE.jar
+            - ./modules/platform/spring-boot-actuator-2.1.6.RELEASE.jar:/usr/local/tomcat/webapps/alfresco/WEB-INF/lib/spring-boot-actuator-2.1.6.RELEASE.jar
+            - ./modules/platform/spring-boot-actuator-autoconfigure-2.1.6.RELEASE.jar:/usr/local/tomcat/webapps/alfresco/WEB-INF/lib/spring-boot-actuator-autoconfigure-2.1.6.RELEASE.jar
+            - ./modules/platform/spring-boot-admin-client-2.2.1.jar:/usr/local/tomcat/webapps/alfresco/WEB-INF/lib/spring-boot-admin-client-2.2.1.jar
+            - ./modules/platform/spring-boot-autoconfigure-2.1.6.RELEASE.jar:/usr/local/tomcat/webapps/alfresco/WEB-INF/lib/spring-boot-autoconfigure-2.1.6.RELEASE.jar
+            
+on community
+-
+Add the same ones as above for enterprise and these
+
+        volumes:        
+            - ./modules/platform/HdrHistogram-2.1.11.jar:/usr/local/tomcat/webapps/alfresco/WEB-INF/lib/HdrHistogram-2.1.11.jar
+            - ./modules/platform/LatencyUtils-2.0.3.jar:/usr/local/tomcat/webapps/alfresco/WEB-INF/lib/LatencyUtils-2.0.3.jar
+            - ./modules/platform/micrometer-core-1.3.5.jar:/usr/local/tomcat/webapps/alfresco/WEB-INF/lib/micrometer-core-1.3.5.jar            
+- once started check that you can access http://localhost:8080/alfresco/s/mvc-actuators/ (with your admin account) and do not forget that in the case of started containers you need to do a down and up again in order that the new config is applied
+
+Spring boot Admin server
+-
+- Deploy your SBA server
+- TODO: create a docker image for SBA server
+
 Screenshots
 ----
 ![Screenshot application list](/images/screenshots/applications.png)
