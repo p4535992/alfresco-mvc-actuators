@@ -20,15 +20,19 @@ Configuration
 - SBA is quite straight forward to be setup with Spring Boot, so please refer to their howto documentation [https://codecentric.github.io/spring-boot-admin/current/#set-up-admin-server](https://codecentric.github.io/spring-boot-admin/current/#set-up-admin-server)
 
 - alfresco-global.properties default configuration (those properties are subject to change in order to standardize on spring boot)
-    * mvc-actuators.host=http://localhost:8080/alfresco #adapt according to your proxy settings    
-    * mvc-actuators.info={Environment: 'Development'} #data to be shown in the info endpoint    
-    * mvc-actuators.sba.enabled=true #disable or enable SBA registration configuration     
-    * mvc-actuators.sba.host=http://localhost:9595/admin #adapt according to your proxy settings    
-    * mvc-actuators.sba.application_name=Alfresco #the application name registered with SBA    
-    * mvc-actuators.sba.username=admin #basic auth username is used to register with the sba server
-    * mvc-actuators.sba.password=password #basic auth password is used to register with the sba server       
-    * mvc-actuators.sba.metadata={'user.name': 'admin', 'user.password':'admin'} #basicauth is used by sba to callback alfresco actuators any other security type can be configured via spring security
-    * mvc-actuators.jolokia.enabled=true #expose jolokia
+``` 
+mvc-actuators.info.environment=development
+mvc-actuators.jolokia.enabled=true
+
+spring.boot.admin.client.enabled=true
+spring.boot.admin.client.url=http://localhost:9595/admin
+spring.boot.admin.client.username=admin
+spring.boot.admin.client.password=password
+spring.boot.admin.client.instance.serviceUrl=http://localhost:8080/alfresco
+spring.boot.admin.client.instance.name=Alfresco
+spring.boot.admin.client.instance.metadata.user.name=admin
+spring.boot.admin.client.instance.metadata.user.password=admin
+```
     
 
 - if you are still using AMPs you can run=> "mvn package -Pamp" and an amp in zip format will be built. Just rename it to .amp
