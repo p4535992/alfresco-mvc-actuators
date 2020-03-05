@@ -16,6 +16,8 @@
 
 package com.gradecak.alfresco.actuator.module.servlet;
 
+import java.io.IOException;
+
 import javax.servlet.ServletException;
 
 import org.jolokia.http.AgentServlet;
@@ -28,6 +30,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 import com.gradecak.alfresco.actuator.controller.ActuatorJolokiaController;
 import com.gradecak.alfresco.actuator.controller.ActuatorJolokiaController.AlfrescoJolokiaAgentServlet;
+import com.gradecak.alfresco.actuator.module.MvcActuatorsProperties;
 
 @Configuration
 @ConditionalOnClass(AgentServlet.class)
@@ -36,9 +39,10 @@ import com.gradecak.alfresco.actuator.controller.ActuatorJolokiaController.Alfre
 public class JolokiaConfiguration {
 
 	@Bean
-	public ActuatorJolokiaController actuatorJolokiaController(DispatcherServlet dispatcherServlet)
-			throws ServletException {
-		AlfrescoJolokiaAgentServlet jolokiaServlet = new AlfrescoJolokiaAgentServlet();
+	public ActuatorJolokiaController actuatorJolokiaController(DispatcherServlet dispatcherServlet,
+			MvcActuatorsProperties mvcActuatorsProperties) throws ServletException, IOException {
+		AlfrescoJolokiaAgentServlet jolokiaServlet = new AlfrescoJolokiaAgentServlet(
+				mvcActuatorsProperties.getJolokia().getPolicyLocation());
 		jolokiaServlet.init(dispatcherServlet.getServletConfig());
 
 		return new ActuatorJolokiaController(jolokiaServlet);

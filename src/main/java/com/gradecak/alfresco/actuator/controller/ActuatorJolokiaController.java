@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jolokia.http.AgentServlet;
+import org.jolokia.restrictor.RestrictorFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,7 +71,13 @@ public class ActuatorJolokiaController {
 
 	@PostMapping
 	public void post(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		endpoint.doPost(req, resp);
+		HttpServletRequestWrapper httpServletRequestWrapper = new HttpServletRequestWrapper(req) {
+			@Override
+			public String getContextPath() {
+				return "/jolokia";
+			}
+		};
+		endpoint.doPost(httpServletRequestWrapper, resp);
 	}
 
 	@RequestMapping(method = RequestMethod.OPTIONS)
@@ -87,6 +94,10 @@ public class ActuatorJolokiaController {
 	}
 
 	public static class AlfrescoJolokiaAgentServlet extends AgentServlet {
+
+		public AlfrescoJolokiaAgentServlet(String policyLocation) throws IOException {
+			super(RestrictorFactory.lookupPolicyRestrictor(policyLocation));
+		}
 
 		@Override
 		protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
