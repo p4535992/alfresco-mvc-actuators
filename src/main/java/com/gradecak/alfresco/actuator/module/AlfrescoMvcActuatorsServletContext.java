@@ -32,13 +32,14 @@ import com.gradecak.alfresco.actuator.module.servlet.JolokiaConfiguration;
 import com.gradecak.alfresco.actuator.module.servlet.MappingsConfiguration;
 import com.gradecak.alfresco.actuator.module.servlet.MetricsConfiguration;
 import com.gradecak.alfresco.actuator.module.servlet.SbaConfiguration;
+import com.gradecak.alfresco.mvc.boot.AlfrescoMvcSpringDocConfiguration;
 import com.gradecak.alfresco.mvc.rest.annotation.EnableWebAlfrescoMvc;
 
 @Configuration
 @EnableWebAlfrescoMvc
 @EnableConfigurationProperties(MvcActuatorsProperties.class)
 @Import({ MappingsConfiguration.class, SbaConfiguration.class, ActuatorsConfiguration.class, JolokiaConfiguration.class,
-		MetricsConfiguration.class, ActuatorsHealthConfiguration.class })
+		MetricsConfiguration.class, ActuatorsHealthConfiguration.class, AlfrescoMvcSpringDocConfiguration.class })
 public class AlfrescoMvcActuatorsServletContext implements WebMvcConfigurer {
 
 	// alfresco mapper (parent) does not include non empty fields
